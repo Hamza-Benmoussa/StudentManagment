@@ -16,9 +16,9 @@ public class Main {
             System.out.println("2. Delete Student");
             System.out.println("3. Update Student");
             System.out.println("4. SeeAllStudent");
-            System.out.println("5. Search");
-            System.out.println("6. See All Users");
-            System.out.println("7. Exit");
+            System.out.println("5. Calcul Averge 1 / 2 ");
+            System.out.println("6. Exit");
+
             p=scanner.nextInt();
             switch (p){
                 case 1:
@@ -122,11 +122,15 @@ public class Main {
                                 System.out.println("The average grade for " + matiereChoix + " is: " + resultat);
                                 break ;
                             case 2:
-                                System.out.println("Enter the existing subjects: ");
-                                String allSubject = scanner.next();
-                                double resultAll = managmentStudent.calculerMoyenGeneral(allSubject);
-                                System.out.println("Here is the overall average grade across all subjects: " + resultAll);
-                                break ;
+                                System.out.println("Enter name student : ");
+                                String sudentName = scanner.next();
+                                double resultAll = managmentStudent.calculerMoyenGeneral(sudentName);
+                                if (resultAll != -1) {
+                                    System.out.println("Here is the overall average grade across all subjects: " + resultAll);
+                                } else {
+                                    System.out.println("Student does not exist with the name: " + studentName);
+                                }
+                                break;
                             default:
                                 System.out.println("Invalid choice. Please enter a valid option.");
                         }
