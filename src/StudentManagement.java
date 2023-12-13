@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface StudentManagement {
-    Student addStudent(Student student);
+    void addStudent();
     void updateStudent(String name,String newEmail, int newNumber);//changer
     public List<Student> seeStudent();
     List<Matiere> getSubjectsForStudent(String name);

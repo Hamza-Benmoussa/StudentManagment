@@ -11,8 +11,18 @@ public class ManagmentStudent implements StudentManagement{
         this.students = new ArrayList<>();
     }
     public List<Student> seeStudent(){
+
         return students;
     }
+    public Student getStudentByName(String name) {
+        for (Student student : students) {
+            if (student.getName().equals(name)) {
+                return student;
+            }
+        }
+        return null; // Si l'étudiant n'est pas trouvé
+    }
+
     public Boolean checkStudent(String name){
         for (Student student : students){
             if (student.getName().equals(name)){
@@ -25,57 +35,88 @@ public class ManagmentStudent implements StudentManagement{
 
 
     @Override
-    public Student addStudent(Student student) {
-        for (Student existStudent : students) {
-            if (existStudent.getName().equals(student.getName())) {
-                System.out.println("The student with the name '" + student.getName() + "' already exists.");
+    public void addStudent() {
+        Scanner scanner = new Scanner(System.in);
 
-                // Display existing subjects and grades
-                System.out.println("Existing subjects and grades:");
-                List<Matiere> existingSubjects = existStudent.getMatiere();
-                for (Matiere existingMatiere : existingSubjects) {
-                    System.out.println(existingMatiere.getLabelMatier() + ": " + existingMatiere.getNote());
-                }
+        System.out.println("Enter the name: ");
+        String name = scanner.next();
 
-                System.out.println("Do you want to add new subjects? Enter 1 for Yes, 0 for No: ");
-                int choice = scanner.nextInt();
-                scanner.nextLine();  // Consume the newline character
+        // Vérifier si l'étudiant existe déjà
+        boolean studentExists = checkStudent(name);
 
-                if (choice == 1) {
-                    // Add new subjects and grades
-                    System.out.println("How many subjects: ");
-                    int mat = scanner.nextInt();
-                    List<Matiere> matieres = new ArrayList<>();
-                    for (int i = 0; i < mat; i++) {
-                        System.out.println("Enter the subject name: ");
-                        String subjectName = scanner.next();
-                        System.out.println("How many grades for this subject: ");
-                        int note = scanner.nextInt();
-                        List<Integer> noteSubject = new ArrayList<>();
-                        for (int j = 0; j < note; j++) {
-                            System.out.println("Enter the grade value: ");
-                            int noteVal = scanner.nextInt();
-                            if (noteVal >= 0 && noteVal <= 20) {
-                                noteSubject.add(noteVal);
-                            } else {
-                                System.out.println("Invalid grade value. Enter a value between 0 and 20!");
-                                j--;
-                            }
-                        }
-                        Matiere matiere = new Matiere(subjectName, noteSubject);
-                        matieres.add(matiere);
+        if (studentExists) {
+            System.out.println("Student already exists. Adding subjects and grades.");
+
+            // Obtenir l'étudiant existant
+            Student existingStudent = getStudentByName(name);
+
+            // Code pour ajouter des matières et des notes à l'étudiant existant
+            System.out.println("How many subjects: ");
+            int mat = scanner.nextInt();
+            for (int i = 0; i < mat; i++) {
+                System.out.println("Enter the subject name: ");
+                String subjectName = scanner.next();
+                System.out.println("How many grades for this subject: ");
+                int noteCount = scanner.nextInt();
+
+                List<Integer> noteSubject = new ArrayList<>();
+                for (int j = 0; j < noteCount; j++) {
+                    System.out.println("Enter the grade value: ");
+                    int noteVal = scanner.nextInt();
+                    if (noteVal >= 0 && noteVal <= 20) {
+                        noteSubject.add(noteVal);
+                    } else {
+                        System.out.println("Invalid grade value. Enter a value between 0 and 20!");
+                        j--;
                     }
-                    existStudent.getMatiere().addAll(matieres);
-                    System.out.println("New subjects and grades have been added for the existing student.");
                 }
 
-                return existStudent; // Return existing student with or without new subjects and grades
+                // Ajouter le sujet avec les notes à l'étudiant existant
+                Matiere matiere = new Matiere(subjectName, noteSubject);
+                existingStudent.getMatiere().add(matiere);
             }
-        }
 
-        students.add(student);
-        System.out.println("Student has been added: " + student.getName());
-        return student;
+            System.out.println("Subjects and grades have been added for the existing student.");
+        } else {
+            // L'étudiant n'existe pas, ajouter un nouvel étudiant avec des matières et des notes
+            System.out.println("Student does not exist. Adding a new student with subjects and grades.");
+
+            System.out.println("Enter the email: ");
+            String email = scanner.next();
+
+            System.out.println("Enter the phone number: ");
+            int phoneNumber = scanner.nextInt();
+
+            System.out.println("How many subjects: ");
+            int mat = scanner.nextInt();
+            List<Matiere> matieres = new ArrayList<>();
+
+            // Boucle pour le nombre de matières
+            for (int i = 0; i < mat; i++) {
+                System.out.println("Enter the subject name: ");
+                String subjectName = scanner.next();
+                System.out.println("How many grades for this subject: ");
+                int note = scanner.nextInt();
+                List<Integer> noteSubject = new ArrayList<>();
+                for (int j = 0; j < note; j++) {
+                    System.out.println("Enter the grade value: ");
+                    int noteVal = scanner.nextInt();
+                    if (noteVal >= 0 && noteVal <= 20) {
+                        noteSubject.add(noteVal);
+                    } else {
+                        System.out.println("Invalid grade value. Enter a value between 0 and 20!");
+                        j--;
+                    }
+                }
+                Matiere matiere = new Matiere(subjectName, noteSubject);
+                matieres.add(matiere);
+            }
+
+            // Ajouter le nouvel étudiant avec les matières
+            Student student = new Student(name, email, phoneNumber, matieres);
+            students.add(student);
+            System.out.println("New student has been added with subjects and grades.");
+        }
     }
 
 
@@ -124,16 +165,21 @@ public class ManagmentStudent implements StudentManagement{
         }
         System.out.println("No student found with the name: " + name);
     }
+
     //function return list subject and we need to pass the name
+
     public List<Matiere> getSubjectsForStudent(String name) {
         for (Student student : students) {
             if (student.getName().equals(name)) {
                 return student.getMatiere();
             }
         }
+
         // return emmptY list
+
         return new ArrayList<>();
     }
+
     //function for calculer averge subject
 
     @Override
@@ -155,9 +201,10 @@ public class ManagmentStudent implements StudentManagement{
                 }
             }
         }
-        // If the student or subject is not found, return -1 to indicate an error
+        // If the student or subject is not found, return -1 for indicate an error
         return -1;
     }
+
     //function for calculer averge all subject
 
     @Override
@@ -181,7 +228,7 @@ public class ManagmentStudent implements StudentManagement{
                 }
             }
         }
-        // If the student or subjects are not found or there are no grades, return -1 to indicate an error
+        // If the student or subjects are not found or there are no grades, return -1 for indicate an error
         return -1;
     }
 

@@ -1,10 +1,13 @@
+
+import java.io.FileNotFoundException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args){
         ManagmentStudent managmentStudent = new ManagmentStudent();
 
         manage:
@@ -22,56 +25,10 @@ public class Main {
             p=scanner.nextInt();
             switch (p){
                 case 1:
-
-                    System.out.println("Enter the name : ");
-                    String name = scanner.next();
-
-                    System.out.println("Enter the email: ");
-                    String email = scanner.next();
-
-                    System.out.println("Enter the phone number: ");
-                    int phoneNumber = scanner.nextInt();
-//                    boolean check =managmentStudent.checkStudent(name);
-//                    if (check){
-//                        System.out.println("existe !!!!!!!!!!!");
-//
-//                    }
-
-                    System.out.println("How many subjects: ");
-                    int mat = scanner.nextInt();
-                    //Initialise List Matiere
-                    List<Matiere> matieres = new ArrayList<>();
-                    //LOOP for number of subject
-                    for (int i =0; i<mat ; i++){
-                        System.out.println("Enter the subject name: ");
-                        String subjectName = scanner.next();
-                        System.out.println("How many grades for this subject: ");
-                        int note =scanner.nextInt();
-                        //Initialise for list of grades
-                        List<Integer> noteSubject = new ArrayList<>();
-                        //LOOP for grade of subject
-                        for (int j =0; j<note;j++){
-                            System.out.println("Enter the grade value: ");
-                            int noteVal = scanner.nextInt();
-                            //Condition of insert note
-                            if (noteVal>=0 && noteVal<=20){
-                                noteSubject.add(noteVal);
-                            }
-                            else {
-                                System.out.println("Invalid grade value. Enter a value between 0 and 20!");
-                                j--;//pour donner rentrer  la note si la note invalid
-                            }
-                        }
-                        //Add the subject with name and note
-                        Matiere matiere = new Matiere(subjectName,noteSubject);
-                        matieres.add(matiere);
-                    }
-                    //Add student
-                    Student student =  new Student(name,email,phoneNumber,matieres);
-                    managmentStudent.addStudent(student);
+                    // Utilisez la nouvelle méthode addStudent
+                    managmentStudent.addStudent();
                     managmentStudent.afficherStudent();
                     break;
-
 
                 case 2 :
                     System.out.println("Enter the name : ");
@@ -85,8 +42,9 @@ public class Main {
                     String nameStudent = scanner.next();
                     System.out.println("Enter newEmail: ");
                     String newEmail = scanner.next();
-                    System.out.println("Enter number: ");
+                    System.out.println("Enter newNumber: ");
                     int newNumber = scanner.nextInt();
+
                     managmentStudent.updateStudent(nameStudent,newEmail,newNumber);
                     managmentStudent.afficherStudent();
                     break;
@@ -146,5 +104,6 @@ public class Main {
                     break;
             }
         }
+
     }
 }
